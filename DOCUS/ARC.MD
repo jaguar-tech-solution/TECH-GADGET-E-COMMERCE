@@ -87,8 +87,8 @@ For local development, each application runs on a dedicated port to enable concu
 
 | Application | Local Address | Port |
 | --- | --- | --- |
-| **Storefront** | `http://localhost:5173` | `5126` |
-| **Admin** | `http://localhost:5174` | `5127` |
+| **Storefront** | `http://localhost:5173` | `5173` |
+| **Admin** | `http://localhost:5174` | `5173` |
 | **Backend API** | `http://localhost:3780` | `5600` |
 
 > **Note:** These ports are restricted to local development environments and do not represent production infrastructure.
@@ -319,3 +319,137 @@ export const apiClient = axios.create({
 1. **CORS Headers:** The API response MUST include `Access-Control-Allow-Credentials: true`.
 2. **Explicit Origins:** `Access-Control-Allow-Origin` CANNOT be set to wildcard `*`. It must explicitly match `http://localhost:5173` or `http://localhost:5174`.
 3. **SameSite=None Requirement:** If your API is on a different root domain in production, `SameSite=None` MUST be paired with `Secure=true`.
+
+
+
+Here are the step-by-step instructions to set up, configure, and verify the `apps/api` Node.js application running Express with ES modules.
+
+1. **Prepare Directory & Initialize Node Project:** Run from workspace root.
+Create the target directory, clean existing contents, and initialize a standard `package.json`.
+
+```bash
+# Create and clean the API directory
+mkdir -p apps/api
+rm -rf apps/api/*
+
+# Navigate to directory and initialize package
+cd apps/api
+npm init -y
+
+```
+
+
+2. **Configure ES Modules, Dependencies & Scripts:** Edit apps/api/package.json.
+Update `apps/api/package.json` to set `"type": "module"` and install Express along with runtime tools.
+
+```bash
+# Install Express and environment variable handler
+npm install express dotenv cors
+
+# Install Nodemon for automatic dev server reloads
+npm install -D nodemon
+
+```
+
+Modify `package.json` to include `"type": "module"` and your development scripts:
+
+```json
+{
+  "name": "api",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  }
+}
+
+```
+
+
+3. **Define Environment Configuration:** Create apps/api/.env.
+Create an `.env` file inside `apps/api` to specify the local port and client CORS origins.
+
+```env
+PORT=3780
+NODE_ENV=development
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174
+
+```
+
+
+4. **Create Express Server & Health-Check Endpoint:** Create apps/api/src/index.js.
+Create the entry point file `src/index.js` with CORS configuration, JSON parsing, and the health-check route.
+
+```javascript
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3780;
+
+// CORS configuration for storefront (5173) and admin (5174)
+const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS
+  ? process.env.CORS_ALLOWED_ORIGINS.split(',')
+  : ['http://localhost:5173', 'http://localhost:5174'];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Origin ${origin} not allowed by CORS`));
+      }
+    },
+    credentials: true,
+  })
+);
+
+app.use(express.json());
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Backend API running on http://localhost:${PORT}`);
+});
+
+```
+
+
+5. **Start Development Server & Verify:** Run inside apps/api.
+Launch the server in watch mode using Nodemon:
+
+```bash
+npm run dev
+
+```
+
+Test the health-check endpoint in your browser or terminal:
+
+```bash
+curl http://localhost:3780/api/health
+
+```
+
+**Expected Response:**
+
+```json
+{
+  "status": "ok",
+  "timestamp": "2026-11-02T16:49:00.000Z",
+  "environment": "development"
+}
+
+```
