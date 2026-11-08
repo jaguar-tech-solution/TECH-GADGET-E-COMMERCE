@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 export const registerSchema = z.object({
-    body: z.object({
+  
         firstName: z.string().trim().min(2, "First name must be at least 2 characters").max(100),
         lastName: z.string().trim().min(2, "Last name must be at least 2 characters").max(100),
         email: z.string().trim().toLowerCase().email("Please provide a valid email address").max(255),
@@ -14,7 +14,7 @@ export const registerSchema = z.object({
             .refine((val) => /[A-Z]/.test(val), { message: "Password must contain at least one uppercase letter" })
             .refine((val) => /[a-z]/.test(val), { message: "Password must contain at least one lowercase letter" })
             .refine((val) => /[0-9]/.test(val), { message: "Password must contain at least one number" }),
-    }),
+ 
 
 })
 export const loginSchema = z.object({

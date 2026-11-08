@@ -27,12 +27,18 @@ const shutdown = async (reason, exitCode = 0) => {
   }, SHOUTDOWN_TIMEOUT_MS).unref();
 
   try {
-    if (server) {
-      server.closeIdleConnections();
-      await new Promise((resolve, reject) => {
-        server.close((err) => (err ? reject(err) : resolve()))
+    if (server?.listening) {
 
-      })
+      await new Promise((resolve, reject) => {
+        //server.close((err) => (err ? reject(err) : resolve()))
+        server.close((err) =>{
+          if(err) return reject(err);
+          resolve();
+        })
+        server.closeIdleConnection();//close idle connection
+      });
+
+
     }
 
     await prisma.$disconnect();
@@ -45,45 +51,52 @@ const shutdown = async (reason, exitCode = 0) => {
 
 };
 
+//starting the application
 const start = async () => {
-  await prisma.$connect();
+
+  await prisma.$connect();//connecting database first
   console.log("Database connected.");
 
-const server =  app.listen(PORT, () => {
+   server = app.listen(PORT, () => {
     console.log(`🚀 Backend API listening on http://localhost:${PORT}`);
     console.log(`🏥 Health check: http://localhost:${PORT}/api/v1/health`);
   });
 
+
+  //HTTP timeout comfiguration
   server.keepAliveTimeout = 65_000;
   server.headersTimeout = 66_000;
 
-  
-  server.on("error", (err) =>{
-    console.error(
-        err.code === "EADDRINUSE" ? `Port ${PORT} is already in use.` : "Server error:",
-      err.code === "EADDRINUSE" ? "" : err
-    );
+  //handle HTTP server errors
+  server.on("error", (err) => {
+    console.error("Server error:", err);
+
+    if (err.code === "EADDRINUSE") {
+      console.error(`Port ${PORT} is already in use`);
+    }
     shutdown("listen errr", 1)
   })
 
 }
 
+//processing signal handling
 process.on("SIGINT", () => shutdown("SIGINT"));
-process.on("SIGTERM", shutdown("SIGTERM"));
+process.on("SIGTERM",()=> shutdown("SIGTERM"));
 
-
+//Unexpected Promise rejection
 process.on("unhandledRejection", (reason) => {
   console.error("Unhandled rejection:", reason);
   shutdown("unhandledRejection", 1);
 });
 
+//unexpected javascript exception
 process.on("uncaughtException", (err) => {
   console.error("Uncaught exception:", err);
   shutdown("uncaughtException", 1);
 });
 
 
-start().catch((err) =>{
+start().catch((err) => {
   console.error("Failed to start server:", err);
-  process.exit(1)
+  shutdown("startup failure", 1)
 })

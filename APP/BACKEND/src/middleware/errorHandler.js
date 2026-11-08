@@ -26,7 +26,7 @@ export const errorHandler = (err, req, res, next) => {
                 message: i.message
             })),
         };
-    } else if (err instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
+    } else if (err instanceof Prisma.PrismaClientKnownRequestError) {
         switch (err.code) {
             case "P2002": // unique constraint: don't reveal which field
                 statusCode = 409;
@@ -68,7 +68,7 @@ export const errorHandler = (err, req, res, next) => {
         message = "Request body is too large.";
 
     } else if (err.statusCode >= 400 && err.statusCode < 500) {
-        // Operational errors we threw ourselves (AppError, CORS block, 404...)
+       
         statusCode = err.statusCode;
         code = err.code || "APP_ERROR";
         message = err.message;
