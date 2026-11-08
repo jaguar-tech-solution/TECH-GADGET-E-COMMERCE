@@ -2,8 +2,10 @@ import {Pool, neonConfig} from "@neondatabase/serverless";
 import {PrismaNeon} from "@prisma/adapter-neon";
 import ws from "ws";
 
+import dotenv from 'dotenv'
+dotenv.config()
 
-import {PrismaClient} from "@prisma/client";
+import { PrismaClient } from '../generated/prisma/client.js';
 
 
 //configuring Neon to use Node's wensocket module
@@ -11,10 +13,10 @@ neonConfig.webSocketConstructor = ws;
 
 const createPrismaClient = () =>{
     const connectionString = process.env.DATABASE_URL
-
+   
+   // console.log(connectionString)
     if(!connectionString){
         throw new Error('DATABASE_URL environment variable is missing.')
-
         return;
     }
 
