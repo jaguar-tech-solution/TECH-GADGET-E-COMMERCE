@@ -1,6 +1,8 @@
+import dotenv from "dotenv"
 import { success } from "zod";
 import * as authService from "../services/authService.js"
 import { registerSchema, loginSchema } from "../validators/authValidator.js"
+dotenv.config()
 
 const isProduction = process.env.NODE_ENV === "production";
 const TOKEN_MAX_AGE_MS = 15 * 60 * 1000;
@@ -26,7 +28,9 @@ export const register = asyncHandler(async (req, res) => {
 })
 export const login = asyncHandler(async(req, res)=>{
     const credentials = loginSchema.parse(req.body);
-    const {token, user} = await authService.loginUser(credentials)
+    const {token, user} = await authService.loginUser(credentials);
+
+
 
     res.set("Cache-Control", "no-store");
     res.cookie("token", token, {...cookieOptions, maxAge: TOKEN_MAX_AGE_MS});

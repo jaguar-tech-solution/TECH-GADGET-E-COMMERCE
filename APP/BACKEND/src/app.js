@@ -1,3 +1,4 @@
+import dotenv from "dotenv"
 import express from 'express';
 import cors from 'cors';
 import helmet from "helmet";
@@ -5,8 +6,9 @@ import cookieParser from "cookie-parser"
 import rateLimit from "express-rate-limit"
 import authRoutes from "./routers/authRoutes.js"
 import { errorHandler } from "./middleware/errorHandler.js"
+import hpp from "hpp";
 
-
+dotenv.config()
 
 const app = express();
 
@@ -16,6 +18,8 @@ const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS
   : ['http://localhost:5173', 'http://localhost:5174'];
 
 app.use(helmet())//configure http security headers
+app.disable('X-powered-by');
+app.use(hpp())// Secure against HTTP Parameter Pollution
 app.set("trust proxy", 1);//set to real prox hop
 app.use(
   cors({

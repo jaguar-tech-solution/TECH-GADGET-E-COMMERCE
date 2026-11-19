@@ -10,27 +10,31 @@ if (!JWT_SECRET || JWT_SECRET.length < 32) {
     throw new Error("FATAL CONFIGURATION ERROR: JWT_SECRET missing or too short (min 32 chars)");
 }
 
-const JWT_EXPIRES_IN = "3d"; // consider 15m + refresh tokens
+const JWT_EXPIRES_IN = "3d";
 const BCRYPT_ROUNDS = 12;
 
-// Same cost factor as real hashes, so the timing matches
+
 const DUMMY_HASH = bcrypt.hashSync("dummy-password-for-timing", BCRYPT_ROUNDS);
 
+//design the email to lowerCase
 const normalizeEmail = (email) => email.trim().toLowerCase();
 
 export const registerUser = async ({ firstName, lastName, email, phone, password }) => {
-    const hashPassword = await bcrypt.hash(password, BCRYPT_ROUNDS);
+    const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
 
     try {
-        return await prisma.user.create({
+        return await prisma.user.create({ // creating user during registration
             data: {
                 firstName,
                 lastName,
                 email: normalizeEmail(email),
                 phone,
-                hashPassword,
+                passwordHash,
                 userRoles: {
-                    create: { role: { connect: { name: "CUSTOMER" } } },
+                    create: { role: { connectOrCreate:{
+                        where: { name: "CUSTOMER" } ,
+                        create : {name: "CUSTOMER"}
+                    }} },
                 },
             },
             select: {
@@ -45,10 +49,10 @@ export const registerUser = async ({ firstName, lastName, email, phone, password
     } catch (err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError) {
             if (err.code === "P2002") {
-                throw new AppError("An account with these details already exists.", 409, "CONFLICT");
+                throw new AppError("There is a unique constraint violation, a new user cannot be created with this email", 409, "CONFLICT");
             }
             if (err.code === "P2025") {
-                throw new AppError("Account setup is unavailable right now.", 500, "CONFIGURATION_ERROR");
+                throw new AppError("An operation failed because it depends on one or more records that were required but not found. ", 500, "CONFIGURATION_ERROR");
             }
         }
         throw err;
@@ -68,16 +72,16 @@ export const loginUser = async ({ email, password }) => {
             },
         },
     });
-
+        console.log("This is the user ", user)
     // Always run one bcrypt compare so timing is the same for unknown emails
-    const isPasswordValid = await bcrypt.compare(password, user?.hashPassword ?? DUMMY_HASH);
-
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash ?? DUMMY_HASH);
+     
     if (!user || !isPasswordValid) {
         throw new AppError("Invalid email or password.", 401, "INVALID_CREDENTIALS");
     }
 
-    if (user.status !== "ACTIVE") { // adjust to your status enum
-        throw new AppError("This account is not active.", 403, "ACCOUNT_DISABLED");
+    if (user.status !== "ACTIVE") { 
+        throw new AppError(`This account is ${user.status === "ACTIVE" ? "": `${user.status}`} .`, 403, `ACCOUNT_${user.status}`);
     }
 
     const roles = user.userRoles.map((ur) => ur.role.name);

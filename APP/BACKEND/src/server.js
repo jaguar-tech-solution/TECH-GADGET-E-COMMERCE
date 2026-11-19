@@ -4,7 +4,6 @@ import app from './app.js';
 import { prisma } from './lib/prisma.js';
 
 dotenv.config();
-
 const PORT = Number(process.env.PORT) || 3780;
 const SHOUTDOWN_TIMEOUT_MS = 10_000;
 
