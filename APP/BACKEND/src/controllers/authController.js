@@ -11,7 +11,7 @@ const cookieOptions = {
     httpOnly: true,
     secure: isProduction,
     sameSite: "lax",
-    path: "/",
+    path: "/cookes",
 }
 const asyncHandler = (fn) => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next);
@@ -29,9 +29,6 @@ export const register = asyncHandler(async (req, res) => {
 export const login = asyncHandler(async(req, res)=>{
     const credentials = loginSchema.parse(req.body);
     const {token, user} = await authService.loginUser(credentials);
-
-
-
     res.set("Cache-Control", "no-store");
     res.cookie("token", token, {...cookieOptions, maxAge: TOKEN_MAX_AGE_MS});
     //Token only in the cookie for browser clients
