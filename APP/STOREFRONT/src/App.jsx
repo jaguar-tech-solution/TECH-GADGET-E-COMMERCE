@@ -1,12 +1,19 @@
+import { BrowserRouter, Route , Routes } from 'react-router-dom'
 
+import Home from './pages/Home'
+import Register from './auth/Register'
 import './App.css'
 
 function App() {
 
   return (
-   <>
-       <h1>This is a digi gadget e-commerce</h1>
-   </>
+     <BrowserRouter>
+        <Routes>
+          <Route path='/' element= {<Home/>}/>
+          <Route path='/register' element={<Register/>}/>
+        </Routes>
+     
+     </BrowserRouter>
   )
 }
 

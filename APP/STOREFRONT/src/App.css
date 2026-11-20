@@ -1,0 +1,267 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   GADGET STORE — DESIGN SYSTEM TOKENS
+   Derived from Design Brief Document (Doc 04)
+   Target: WCAG 2.2 Level AA | Light Theme Default + Future Dark Mode Scaffold
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     1. PRIMITIVE / RAW PALETTE TOKENS
+     ------------------------------------------------------------------------ */
+  --color-navy-900: #14213d;     /* Primary brand / deep navy */
+  --color-blue-600: #2564eb56;     /* Secondary action blue */
+  --color-cyan-500: #06b6d4;     /* Accent cyan */
+
+  --color-slate-50: #f8fafc;     /* Main page background */
+  --color-white: #ffffff;        /* Surface / cards / panels */
+  --color-slate-200: #e2e8f0;    /* Borders / dividers */
+  --color-slate-500: #64748b;    /* Secondary / muted text */
+  --color-slate-900: #0f172a;    /* Primary ink / text */
+
+  --color-green-600: #16a34a;    /* Success */
+  --color-amber-600: #d97706;    /* Warning */
+  --color-red-600: #dc2626;      /* Error / destructive */
+
+  /* Soft / tinted status backgrounds for badges, banners, and alerts */
+  --color-green-50: #f0fdf4;
+  --color-green-200: #bbf7d0;
+  --color-amber-50: #fffbeb;
+  --color-amber-200: #fde68a;
+  --color-red-50: #fef2f2;
+  --color-red-200: #fecaca;
+  --color-cyan-50: #ecfeff;
+  --color-cyan-200: #a5f3fc;
+  --color-blue-50: #eff6ff;
+
+  /* ------------------------------------------------------------------------
+     2. SEMANTIC COLOR TOKENS (LIGHT THEME — INITIAL RELEASE)
+     ------------------------------------------------------------------------ */
+  /* Backgrounds & Surfaces */
+  --bg-page: var(--color-slate-50);
+  --bg-surface: var(--color-white);
+  --bg-surface-subtle: var(--color-slate-50);
+  --bg-surface-elevated: var(--color-white);
+  --bg-overlay: rgba(15, 23, 42, 0.5);
+
+  /* Text & Iconography */
+  --text-primary: var(--color-slate-900);
+  --text-secondary: var(--color-slate-500);
+  --text-muted: var(--color-slate-500);
+  --text-on-primary: var(--color-white);
+  --text-on-secondary: var(--color-white);
+  --text-on-accent: var(--color-slate-900);
+  --text-link: var(--color-blue-600);
+  --text-link-hover: var(--color-navy-900);
+
+  /* Brand & Interactive Actions */
+  --brand-primary: var(--color-navy-900);
+  --brand-secondary: var(--color-blue-600);
+  --brand-accent: var(--color-cyan-500);
+
+  --action-primary-bg: var(--color-navy-900);
+  --action-primary-hover: #0d1629;
+  --action-primary-active: #080e1a;
+  --action-primary-text: var(--color-white);
+
+  --action-secondary-bg: var(--color-blue-600);
+  --action-secondary-hover: #1d4ed8;
+  --action-secondary-active: #1e40af;
+  --action-secondary-text: var(--color-white);
+
+  --action-accent-bg: var(--color-cyan-500);
+  --action-accent-text: var(--color-slate-900);
+
+  --action-disabled-bg: var(--color-slate-200);
+  --action-disabled-text: var(--color-slate-500);
+
+  /* Borders & Focus */
+  --border-default: var(--color-slate-200);
+  --border-subtle: var(--color-slate-200);
+  --border-strong: var(--color-slate-500);
+  --border-focus: var(--color-blue-600);
+  --focus-ring-color: var(--color-blue-600);
+  --focus-ring-offset: var(--color-white);
+  --focus-ring-width: 2px;
+  --focus-ring-offset-width: 2px;
+
+  /* Semantic Status & Feedback */
+  --status-success-bg: var(--color-green-50);
+  --status-success-border: var(--color-green-200);
+  --status-success-text: var(--color-green-600);
+
+  --status-warning-bg: var(--color-amber-50);
+  --status-warning-border: var(--color-amber-200);
+  --status-warning-text: var(--color-amber-600);
+
+  --status-error-bg: var(--color-red-50);
+  --status-error-border: var(--color-red-200);
+  --status-error-text: var(--color-red-600);
+
+  --status-info-bg: var(--color-cyan-50);
+  --status-info-border: var(--color-cyan-200);
+  --status-info-text: var(--color-navy-900);
+
+  /* ------------------------------------------------------------------------
+     3. TYPOGRAPHY TOKENS
+     ------------------------------------------------------------------------ */
+  --font-sans: "Inter", "Roboto", "Manrope", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+
+  /* Type Scale (Base & Responsive Clamp Ranges) */
+  --font-size-display: clamp(2rem, 1.5rem + 2vw, 3rem);         /* 32px -> 48px (40-48px desktop) */
+  --font-size-page-heading: clamp(1.625rem, 1.3rem + 1.2vw, 2.25rem); /* 26px -> 36px (30-36px desktop) */
+  --font-size-section-heading: clamp(1.25rem, 1.1rem + 0.7vw, 1.75rem); /* 20px -> 28px (24-28px desktop) */
+  --font-size-subheading: clamp(1.125rem, 1.05rem + 0.25vw, 1.25rem); /* 18px -> 20px */
+  --font-size-body: 1rem;         /* 16px */
+  --font-size-supporting: 0.875rem; /* 14px */
+  --font-size-label: 0.75rem;     /* 12px */
+  --font-size-button: clamp(0.875rem, 0.85rem + 0.1vw, 1rem); /* 14px - 16px */
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Line Heights (WCAG readability & spec clarity) */
+  --line-height-tight: 1.15;
+  --line-height-heading: 1.25;
+  --line-height-body: 1.5;
+  --line-height-relaxed: 1.65;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.02em;
+
+  /* ------------------------------------------------------------------------
+     4. SPACING SCALE TOKENS
+     ------------------------------------------------------------------------ */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 0.75rem;   /* 12px */
+  --space-lg: 1rem;      /* 16px */
+  --space-xl: 1.5rem;    /* 24px */
+  --space-2xl: 2rem;     /* 32px */
+  --space-3xl: 3rem;     /* 48px */
+  --space-4xl: 4rem;     /* 64px */
+  --space-5xl: 5rem;     /* 80px */
+
+  /* ------------------------------------------------------------------------
+     5. LAYOUT, CONTAINER & GRID TOKENS
+     ------------------------------------------------------------------------ */
+  --container-storefront-max: 80rem;       /* 1280px centered container */
+  --container-gutter-mobile: var(--space-lg); /* 16px */
+  --container-gutter-tablet: var(--space-xl); /* 24px */
+  --container-gutter-desktop: var(--space-2xl); /* 32px */
+
+  --admin-sidebar-width: 16.25rem;         /* 260px persistent desktop sidebar */
+  --admin-sidebar-collapsed-width: 4.5rem; /* 72px icon/compact rail */
+  --admin-header-height: 4rem;             /* 64px top bar */
+  --storefront-header-height: 4.5rem;      /* 72px */
+
+  /* Content-driven Breakpoint Reference Values (for JS/docs; media queries use literals) */
+  --breakpoint-mobile-sm: 360px;
+  --breakpoint-mobile-lg: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-laptop: 1024px;
+  --breakpoint-desktop: 1280px;
+
+  /* Touch Target Minimum (WCAG 2.2 AA / Mobile ergonomics) */
+  --touch-target-min: 2.75rem; /* 44px */
+
+  /* ------------------------------------------------------------------------
+     6. BORDER RADIUS & ELEVATION TOKENS
+     ------------------------------------------------------------------------ */
+  --radius-none: 0px;
+  --radius-sm: 0.25rem;   /* 4px — badges, small inputs */
+  --radius-md: 0.5rem;    /* 8px — buttons, inputs, cards */
+  --radius-lg: 0.75rem;   /* 12px — feature cards, panels */
+  --radius-xl: 1rem;      /* 16px — hero containers, modals */
+  --radius-full: 9999px;  /* pills, avatars */
+
+  /* Subtle, clean elevation (avoids heavy decoration per Section 4 & 5.1) */
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.05);
+
+  /* ------------------------------------------------------------------------
+     7. IMAGE & MEDIA TOKENS
+     ------------------------------------------------------------------------ */
+  --product-image-aspect: 4 / 3;     /* Consistent product card ratio */
+  --product-image-fit: contain;      /* Prevents cropping/stretching on clean listing backgrounds */
+  --product-image-bg: var(--color-white);
+
+  /* ------------------------------------------------------------------------
+     8. MOTION & Z-INDEX TOKENS
+     ------------------------------------------------------------------------ */
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-header: 30;
+  --z-sidebar: 40;
+  --z-dropdown: 50;
+  --z-modal: 60;
+  --z-toast: 70;
+}
+
+/* ==========================================================================
+   FUTURE DARK MODE SCAFFOLD (Section 7.3 — Semantic Token Override)
+   ========================================================================== */
+[data-theme="dark"] {
+  --bg-page: #0b1120;
+  --bg-surface: #0f172a;
+  --bg-surface-subtle: #1e293b;
+  --bg-surface-elevated: #1e293b;
+  --bg-overlay: rgba(2, 6, 23, 0.7);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #94a3b8;
+  --text-on-primary: #ffffff;
+  --text-on-secondary: #ffffff;
+  --text-on-accent: #0f172a;
+  --text-link: #60a5fa;
+  --text-link-hover: #93c5fd;
+
+  --border-default: #334155;
+  --border-subtle: #1e293b;
+  --border-strong: #64748b;
+  --focus-ring-offset: #0f172a;
+
+  --status-success-bg: rgba(22, 163, 74, 0.15);
+  --status-success-border: rgba(22, 163, 74, 0.4);
+  --status-success-text: #4ade80;
+
+  --status-warning-bg: rgba(217, 119, 6, 0.15);
+  --status-warning-border: rgba(217, 119, 6, 0.4);
+  --status-warning-text: #fbbf24;
+
+  --status-error-bg: rgba(220, 38, 38, 0.15);
+  --status-error-border: rgba(220, 38, 38, 0.4);
+  --status-error-text: #f87171;
+
+  --status-info-bg: rgba(6, 182, 212, 0.15);
+  --status-info-border: rgba(6, 182, 212, 0.4);
+  --status-info-text: #22d3ee;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY & REDUCED MOTION BASELINE (Section 14)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0.01ms;
+    --duration-normal: 0.01ms;
+    --duration-slow: 0.01ms;
+  }
+}
