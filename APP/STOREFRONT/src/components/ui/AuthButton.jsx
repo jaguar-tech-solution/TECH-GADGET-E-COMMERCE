@@ -4,7 +4,7 @@ import Divider from "./Divider"
 export default function AuthButton({ onGoogleClick, disabled = false }) {
     return (
         <div className="space-y-lg">
-            <div className="grid grid-cols-1 mobile-lg:grid-cols-2 gap-md">
+            <div className="grid grid-cols-1 mobile-lg:grid-cols-1 gap-md">
                 <button
                     type="button"
                     disabled={disabled}

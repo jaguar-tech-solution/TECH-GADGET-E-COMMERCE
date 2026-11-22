@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import {Store, HelpCircle, Cpu} from "lucide-react"
-function RegisterBar({
+function AuthLayout({
   children, onBackToStore = () => {}, onSupportClick =() =>{}
 }) {
   return (
@@ -60,4 +60,4 @@ function RegisterBar({
   )
 }
 
-export default RegisterBar
+export default AuthLayout
