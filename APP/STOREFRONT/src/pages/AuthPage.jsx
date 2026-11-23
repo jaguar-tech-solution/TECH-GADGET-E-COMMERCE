@@ -6,6 +6,7 @@ const AuthPage = () => {
 
     function handleModechange(nextMode){
         setMode(nextMode)
+        
     }
   return (
     <AuthLayout>

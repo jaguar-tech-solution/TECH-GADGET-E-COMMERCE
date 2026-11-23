@@ -1,7 +1,7 @@
 
 import { User, Mail, Smartphone, Lock, Eye, EyeOff, RotateCcw, Check, AlertCircle, Loader2, } from "lucide-react";
 import { useState } from "react";
-import { useAuth } from "../../Context/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signupSchema } from "./signupSchema";
@@ -60,7 +60,7 @@ const SignUp = () => {
 
       });
 
-      navigate('/home');
+      navigate('/');
 
     } catch (error) {
       setServerMsg(error.message || "Registration failed. Please try again.");

@@ -59,10 +59,22 @@ export const AuthContextProvider = ({ children }) => {
     }
  },[])
 
-
+ const login = useCallback(async({email, password}) =>{
+    try {
+         const data = await api.post('/login', {email, password});
+         return saveSession(data);
+    } catch (error) {
+        getErrorMessage(error, "Invalid email or password")
+        
+    }
+ }, []);
+  const logout = useCallback(() => {
+    localStorage.removeItem(TOKEN_KEY);
+    setUser(null);
+  }, []);
 
     return (
-        <AuthContext.Provider value={{user, isLoading, isAuthenticated:!!user, signup}}>
+        <AuthContext.Provider value={{user, isLoading, isAuthenticated:!!user, signup,login,logout}}>
             {children}
         </AuthContext.Provider>
     )

@@ -4,7 +4,7 @@ import SignUp from "../../auth/SignUp";
 import Login from "../../auth/Login";
 
 const Authcard = ({
-    mode = "register",
+    mode,
     onModeChange,
     bannerError = "",
     bannerSuccess = "",
@@ -14,6 +14,7 @@ const Authcard = ({
 }) => {
 
     const isRegister = mode = "register";
+
     return (
         <section aria-labelledby="auth-card-heading" className="w-full max-w-[520px] rounded-xl border-border bg-surface shadow-md overflow-hidden">
             <div className="px-xl py-md bg-surface-subtle border-b border-border flex items-center text-label font-semibold">
@@ -39,7 +40,9 @@ const Authcard = ({
                         type="button"
                         role="tab"
                         aria-selected={!isRegister}
-                        onClick={() => onModeChange("login")}
+                        onClick={() => onModeChange("login"
+                            
+                        )}
                         className={`min-h-touch-min rounded-md text-supporting font-semibold inline-flex items-center justify-center gap-xs transition-all duration-fast focus-visible:outline-2 focus-visible:outline-focus-ring ${!isRegister
                             ? "bg-surface text-ink shadow-sm"
                             : "text-ink-secondary hover:text-ink"
@@ -99,19 +102,50 @@ const Authcard = ({
                     </div>
                 )}
 
-                <AuthButton 
-                disabled = {isSubmitting}
-                onGoogleClick={onGoogleAuth}
-                 />
+                <AuthButton
+                    disabled={isSubmitting}
+                    onGoogleClick={onGoogleAuth}
+                />
 
-                 {/* Active form */}
-                 {isRegister ? (
-                    <SignUp 
-                     
+                {/* Active form */}
+                {isRegister ? (
+                    <SignUp
+
                     />
-                 ) : (
-                    <Login/>
-                 )}
+                ) : (
+                    <Login />
+                )}
+
+                {/* Form footer */}
+                <div className="pt-sm text-center space-y-md">
+                    <p className="text-supporting text-ink-secondary">
+                        {isRegister ? (
+                            <>
+                                Already have an account ? {" "}
+                                <button
+                                    type="button"
+                                    onClick={() => onModeChange("login")}
+                                    className="font-semibold text-ink-link hover:underline"
+                                >
+                                    Sign in to your vault
+                                </button>
+
+                            </>
+                        ) : (
+                            <>
+                                New to The Gadget Store?{" "}
+                                <button
+                                    type="button"
+                                    onClick={() => onModeChange("register")}
+                                    className="font-semibold text-ink-link hover:underline"
+                                >
+                                    Create your hardware profile
+                                </button>
+
+                            </>
+                        )}
+                    </p>
+                </div>
 
             </div>
 
