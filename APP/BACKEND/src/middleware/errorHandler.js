@@ -95,6 +95,7 @@ export const errorHandler = (err, req, res, next) => {
         logger.error(logPayload, "Unexpected server error");
     } else {
         logger.warn({ ...logPayload, err: { message: err.message, code } }, "Request failed")
+        console.log(logPayload)
     }
     return res.status(statusCode).json({
         success: false,
