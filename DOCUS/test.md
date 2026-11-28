@@ -36,11 +36,5 @@
     "password": "SecurePassword123!"
   }
 
-  {
-  "firstName": "OMONDI",
- "lastName": "Michael",
-  "email": '"omondi.28755@students.kyu.ac.ke",
-  "phone": "0758634835",
-  "password": "12345678*"
-}
+
 
