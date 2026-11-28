@@ -49,7 +49,7 @@ export const AuthContextProvider = ({ children }) => {
     }
  const signup = useCallback(async (payload) =>{
     try {
-         const {data} = await api.post("/register", payload);
+         const {data} = await api.post("auth/register", payload);
 
          return saveSession(data)
     } catch (error) {
@@ -61,7 +61,7 @@ export const AuthContextProvider = ({ children }) => {
 
  const login = useCallback(async({email, password}) =>{
     try {
-         const data = await api.post('/login', {email, password});
+         const data = await api.post('auth/login', {email, password});
          return saveSession(data);
     } catch (error) {
         getErrorMessage(error, "Invalid email or password")

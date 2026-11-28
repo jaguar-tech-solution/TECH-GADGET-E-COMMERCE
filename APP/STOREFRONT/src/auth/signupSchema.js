@@ -10,11 +10,11 @@ export const signupSchema = z
       .string()
       .min(8, "Password must be at least 8 characters long")
       .max(100)
-     /*  .refine((val) => /[A-Z]/.test(val), { message: "Password must contain at least one uppercase letter" })
+      .refine((val) => /[A-Z]/.test(val), { message: "Password must contain at least one uppercase letter" })
       .refine((val) => /[a-z]/.test(val), { message: "Password must contain at least one lowercase letter" })
-      .refine((val) => /[0-9]/.test(val), { message: "Password must contain at least one number" }), */
-      .refine((val) => /\d/.test(val), { message: "Password must contain at least one number" })
-      .refine((val) => /[^A-Za-z0-9]/.test(val), { message: "Password must contain at least one symbol" }),
+      .refine((val) => /[0-9]/.test(val), { message: "Password must contain at least one number" }),
+      //.refine((val) => /\d/.test(val), { message: "Password must contain at least one number" })
+      //.refine((val) => /[^A-Za-z0-9]/.test(val), { message: "Password must contain at least one symbol" }),
 
     confirmPassword: z.string().min(1, "Please confirm your password"),
    /*  terms: z.literal(true, {

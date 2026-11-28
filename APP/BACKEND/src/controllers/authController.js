@@ -19,7 +19,8 @@ const asyncHandler = (fn) => (req, res, next) => {
 export const register = asyncHandler(async (req, res) => {
     const input = registerSchema.parse(req.body);
     const user = await authService.registerUser(input)
-
+ 
+    console.log(user)
     res.status(201).json({
         success: true,
         message: "Account registered successfully.",
